@@ -13,9 +13,10 @@ class UserRole(str, enum.Enum):
 
 
 class EquipmentStatus(str, enum.Enum):
-    OPERATIONAL = "operational"
+    ACTIVELY_WORKING = "actively_working"
+    IDLE = "idle"
     UNDER_MAINTENANCE = "under_maintenance"
-    OUT_OF_SERVICE = "out_of_service"
+    OFF_HIRE = "off_hire"
 
 
 class FaultType(str, enum.Enum):

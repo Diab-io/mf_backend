@@ -14,13 +14,14 @@ class EquipmentBase(BaseModel):
     serial_number: str | None = None
     model_number: str | None = None
     capacity_spec: str | None = None
+    tonnage: float | None = Field(default=None, ge=0)
     current_location: str | None = None
     assigned_site: str | None = None
     next_maintenance_date: date | None = None
 
 
 class EquipmentCreate(EquipmentBase):
-    pass
+    status: EquipmentStatus = EquipmentStatus.IDLE
 
 
 class EquipmentUpdate(BaseModel):
@@ -29,6 +30,7 @@ class EquipmentUpdate(BaseModel):
     serial_number: str | None = None
     model_number: str | None = None
     capacity_spec: str | None = None
+    tonnage: float | None = Field(default=None, ge=0)
     current_location: str | None = None
     assigned_site: str | None = None
     status: EquipmentStatus | None = None

@@ -16,11 +16,12 @@ class Equipment(UUIDPkMixin, TimestampMixin, Base):
     serial_number: Mapped[str | None] = mapped_column(String(100), nullable=True)
     model_number: Mapped[str | None] = mapped_column(String(100), nullable=True)
     capacity_spec: Mapped[str | None] = mapped_column(String(255), nullable=True)
+    tonnage: Mapped[float | None] = mapped_column(Numeric(10, 2), nullable=True)
     current_location: Mapped[str | None] = mapped_column(String(150), nullable=True)
     assigned_site: Mapped[str | None] = mapped_column(String(150), nullable=True)
     status: Mapped[EquipmentStatus] = mapped_column(
         Enum(EquipmentStatus, name="equipment_status", values_callable=lambda x: [e.value for e in x]),
-        default=EquipmentStatus.OPERATIONAL, nullable=False
+        default=EquipmentStatus.IDLE, nullable=False
     )
     last_maintenance_date: Mapped[date | None] = mapped_column(Date, nullable=True)
     next_maintenance_date: Mapped[date | None] = mapped_column(Date, nullable=True)

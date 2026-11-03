@@ -32,9 +32,19 @@ class UserOut(UserBase):
     id: uuid.UUID
     role: UserRole
     is_active: bool
+    archived_at: datetime | None = None
     created_at: datetime
 
 
 class LoginRequest(BaseModel):
     email: EmailStr
     password: str
+
+
+class ForgotPasswordRequest(BaseModel):
+    email: EmailStr
+
+
+class ResetPasswordRequest(BaseModel):
+    token: str
+    new_password: str = Field(min_length=8, max_length=128)

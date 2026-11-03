@@ -44,6 +44,16 @@ class Settings(BaseSettings):
     # --- Rate limiting ---
     RATE_LIMIT_PER_MINUTE: int = 60
 
+    # --- Password reset / email ---
+    PASSWORD_RESET_EXPIRE_MINUTES: int = 30
+    FRONTEND_URL: str = "http://localhost:5173"
+    SMTP_HOST: str = ""
+    SMTP_PORT: int = 587
+    SMTP_USER: str = ""
+    SMTP_PASSWORD: str = ""
+    SMTP_FROM: str = "no-reply@mfventures.com"
+    SMTP_USE_TLS: bool = True
+
     # --- First admin bootstrap ---
     FIRST_ADMIN_EMAIL: str = "admin@mfventures.com"
     FIRST_ADMIN_PASSWORD: str = "change-this-password"
