@@ -158,3 +158,24 @@ async def test_smtp_message_has_reply_to_and_no_header_injection(monkeypatch):
 
     # A bad header value must not raise out of send_email; it reports failure instead.
     assert await email_service.send_email("info@mfventures.com", "Bad\r\nBcc: x@y.z", "Body") is False
+
+
+@pytest.mark.asyncio
+async def test_services_endpoint_lists_options_without_auth(client):
+    r = await client.get("/api/v1/contact/services")
+    assert r.status_code == 200
+    assert r.json() == [
+        {"value": "security_service", "label": "Security service"},
+        {"value": "procurement", "label": "Procurement"},
+        {"value": "engineering_support", "label": "Engineering support"},
+    ]
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "sent_value", ["Procurement", "PROCUREMENT", " procurement ", "Security service", "security-service", "Engineering Support"]
+)
+async def test_service_value_is_case_and_label_tolerant(client, outbox, sent_value):
+    r = await client.post(URL, json={**VALID, "service": sent_value})
+    assert r.status_code == 200, r.text
+    assert len(outbox) == 1

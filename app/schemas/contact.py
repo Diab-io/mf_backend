@@ -19,5 +19,19 @@ class ContactRequest(BaseModel):
         return v.strip() if isinstance(v, str) else v
 
 
+    @field_validator("service", mode="before")
+    @classmethod
+    def normalise_service(cls, v):
+        # Accept "Procurement", "PROCUREMENT", "Security service", "security-service" etc.
+        if isinstance(v, str):
+            return v.strip().lower().replace(" ", "_").replace("-", "_")
+        return v
+
+
 class ContactResponse(BaseModel):
     message: str
+
+
+class ServiceOption(BaseModel):
+    value: str
+    label: str

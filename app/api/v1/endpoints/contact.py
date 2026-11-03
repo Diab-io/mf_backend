@@ -1,10 +1,10 @@
 from fastapi import APIRouter, Request, status
 
 from app.core.config import settings
-from app.core.constants import CONTACT_SERVICE_LABELS
+from app.core.constants import CONTACT_SERVICE_LABELS, ContactService
 from app.core.exceptions import AppError
 from app.core.limiter import limiter
-from app.schemas.contact import ContactRequest, ContactResponse
+from app.schemas.contact import ContactRequest, ContactResponse, ServiceOption
 from app.services.email_service import send_email
 
 router = APIRouter(prefix="/contact", tags=["contact"])
@@ -15,6 +15,12 @@ SUCCESS_MESSAGE = "Thank you for contacting us. We will get back to you shortly.
 class ContactUnavailableError(AppError):
     status_code = status.HTTP_503_SERVICE_UNAVAILABLE
     default_message = "We could not send your message right now. Please try again later."
+
+
+@router.get("/services", response_model=list[ServiceOption])
+async def list_contact_services():
+    """Public: the options for the form's service dropdown. `value` is what to send back in POST /contact."""
+    return [ServiceOption(value=s.value, label=CONTACT_SERVICE_LABELS[s]) for s in ContactService]
 
 
 @router.post("", response_model=ContactResponse)
