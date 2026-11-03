@@ -19,6 +19,19 @@ class EquipmentStatus(str, enum.Enum):
     OFF_HIRE = "off_hire"
 
 
+class ContactService(str, enum.Enum):
+    SECURITY_SERVICE = "security_service"
+    PROCUREMENT = "procurement"
+    ENGINEERING_SUPPORT = "engineering_support"
+
+
+CONTACT_SERVICE_LABELS: dict[ContactService, str] = {
+    ContactService.SECURITY_SERVICE: "Security service",
+    ContactService.PROCUREMENT: "Procurement",
+    ContactService.ENGINEERING_SUPPORT: "Engineering support",
+}
+
+
 class FaultType(str, enum.Enum):
     CORRECTIVE = "corrective_maintenance"
     PREVENTIVE = "preventive_maintenance"

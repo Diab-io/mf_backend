@@ -54,6 +54,10 @@ class Settings(BaseSettings):
     SMTP_FROM: str = "no-reply@mfventures.com"
     SMTP_USE_TLS: bool = True
 
+    # --- Website contact form ---
+    CONTACT_RECIPIENT_EMAIL: str = ""
+    CONTACT_RATE_LIMIT: str = "5/minute"
+
     # --- First admin bootstrap ---
     FIRST_ADMIN_EMAIL: str = "admin@mfventures.com"
     FIRST_ADMIN_PASSWORD: str = "change-this-password"
