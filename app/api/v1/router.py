@@ -1,6 +1,16 @@
 from fastapi import APIRouter
 
-from app.api.v1.endpoints import approvals, auth, equipment, notifications, repair_actions, repair_requests, reports, users
+from app.api.v1.endpoints import (
+    approvals,
+    auth,
+    contact,
+    equipment,
+    notifications,
+    repair_actions,
+    repair_requests,
+    reports,
+    users,
+)
 
 api_router = APIRouter()
 
@@ -12,3 +22,4 @@ api_router.include_router(approvals.router)
 api_router.include_router(repair_actions.router)
 api_router.include_router(notifications.router)
 api_router.include_router(reports.router)
+api_router.include_router(contact.router)
