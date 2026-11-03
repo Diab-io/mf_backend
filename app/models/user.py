@@ -1,6 +1,7 @@
 import uuid
+from datetime import datetime
 
-from sqlalchemy import Boolean, Enum, String
+from sqlalchemy import Boolean, DateTime, Enum, String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.core.constants import UserRole
@@ -19,6 +20,7 @@ class User(UUIDPkMixin, TimestampMixin, Base):
     phone_number: Mapped[str | None] = mapped_column(String(30), nullable=True)
     site: Mapped[str | None] = mapped_column(String(150), nullable=True)
     is_active: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
+    archived_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
 
     reported_faults = relationship(
         "RepairRequest", back_populates="reporter", foreign_keys="RepairRequest.reported_by_id"

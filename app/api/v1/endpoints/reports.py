@@ -19,8 +19,8 @@ router = APIRouter(prefix="/reports", tags=["reports"])
 async def dashboard_summary(current_user: User = Depends(get_current_user), db: AsyncSession = Depends(get_db)):
     """Role-aware snapshot: counts that matter to the logged-in role."""
     equipment_total = (await db.execute(select(func.count(Equipment.id)))).scalar_one()
-    equipment_down = (
-        await db.execute(select(func.count(Equipment.id)).where(Equipment.status == EquipmentStatus.OUT_OF_SERVICE))
+    equipment_off_hire = (
+        await db.execute(select(func.count(Equipment.id)).where(Equipment.status == EquipmentStatus.OFF_HIRE))
     ).scalar_one()
 
     open_requests = (
@@ -43,7 +43,7 @@ async def dashboard_summary(current_user: User = Depends(get_current_user), db: 
 
     summary = {
         "equipment_total": equipment_total,
-        "equipment_out_of_service": equipment_down,
+        "equipment_off_hire": equipment_off_hire,
         "open_repair_requests": open_requests,
         "repairs_in_progress": in_progress,
     }

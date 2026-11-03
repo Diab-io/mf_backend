@@ -183,6 +183,8 @@ async def assign_mechanic(db: AsyncSession, repair_request: RepairRequest, mecha
         raise InvalidTransitionError("Mechanics can only be assigned before or after full approval, not on closed/cancelled requests.")
     if mechanic.role != UserRole.MECHANIC:
         raise PermissionDeniedError("Only a user with the Mechanic role can be assigned to a repair.")
+    if not mechanic.is_active:
+        raise PermissionDeniedError("Archived or inactive users cannot be assigned to a repair.")
     repair_request.assigned_mechanic_id = mechanic.id
     db.add(
         AuditLog(
@@ -211,7 +213,7 @@ async def resume_repair(db: AsyncSession, repair_request: RepairRequest, actor: 
 async def complete_repair(db: AsyncSession, repair_request: RepairRequest, actor: User, final_notes: str | None) -> None:
     await transition(db, repair_request, RepairStatus.REPAIR_COMPLETED, actor, final_notes)
     equipment: Equipment = repair_request.equipment
-    equipment.status = equipment.status.__class__.OPERATIONAL
+    equipment.status = equipment.status.__class__.IDLE
     equipment.last_maintenance_date = date.today()
     await notify_role(
         db, UserRole.SUPERVISOR, NotificationType.REPAIR_COMPLETED,
